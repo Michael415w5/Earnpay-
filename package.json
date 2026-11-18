@@ -9,6 +9,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@vercel/analytics": "^2.0.1",
     "better-auth": "latest",
     "drizzle-orm": "latest",
     "lucide-react": "latest",
