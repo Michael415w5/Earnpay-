@@ -1,0 +1,76 @@
+import { betterAuth } from 'better-auth'
+import { pool } from '@/lib/db'
+
+const vercelOrigins = [
+  ...(process.env.VERCEL_URL ? [`https://${process.env.VERCEL_URL}`] : []),
+  ...(process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? [`https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`]
+    : []),
+]
+
+export const auth = betterAuth({
+  database: pool,
+  baseURL:
+    process.env.BETTER_AUTH_URL ??
+    (process.env.VERCEL_PROJECT_PRODUCTION_URL
+      ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+      : process.env.VERCEL_URL
+        ? `https://${process.env.VERCEL_URL}`
+        : process.env.V0_RUNTIME_URL),
+  emailAndPassword: {
+    enabled: true,
+    autoSignIn: true,
+    minPasswordLength: 10,
+  },
+  user: {
+    additionalFields: {
+      role: {
+        type: 'string',
+        required: false,
+        defaultValue: 'user',
+        input: false,
+      },
+    },
+  },
+  logger: {
+    level: 'error',
+    log: (level, message, ...args) => {
+      console.error(`[better-auth:${level}] ${message}`, ...args)
+    },
+  },
+  onAPIError: {
+    onError: (error: unknown) => {
+      const details = error instanceof Error
+        ? { name: error.name, message: error.message, stack: error.stack }
+        : { value: String(error) }
+      console.error('[better-auth] API request failed', details)
+    },
+  },
+  trustedOrigins: [
+    ...(process.env.NODE_ENV === 'development'
+      ? [
+          'http://localhost:3000',
+          ...(process.env.V0_RUNTIME_URL ? [process.env.V0_RUNTIME_URL] : []),
+          ...(process.env.V0_DEV_APP_URL ? [process.env.V0_DEV_APP_URL] : []),
+          ...(process.env.V0_BUILD_URL ? [process.env.V0_BUILD_URL] : []),
+          ...(process.env.V0_SANDBOX_URL ? [process.env.V0_SANDBOX_URL] : []),
+        ]
+      : []),
+    ...(process.env.NODE_ENV === 'production' ? vercelOrigins : []),
+  ],
+  session: {
+    expiresIn: 60 * 60 * 24 * 7,
+    updateAge: 60 * 60 * 24,
+  },
+  advanced: {
+    database: { validateSchema: true },
+    ...(process.env.NODE_ENV === 'development'
+      ? {
+          defaultCookieAttributes: {
+            sameSite: 'none' as const,
+            secure: true,
+          },
+        }
+      : {}),
+  },
+})
