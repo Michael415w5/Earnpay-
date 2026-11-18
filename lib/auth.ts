@@ -32,6 +32,20 @@ export const auth = betterAuth({
       },
     },
   },
+  logger: {
+    level: 'error',
+    log: (level, message, ...args) => {
+      console.error(`[better-auth:${level}] ${message}`, ...args)
+    },
+  },
+  onAPIError: {
+    onError: (error: unknown) => {
+      const details = error instanceof Error
+        ? { name: error.name, message: error.message, stack: error.stack }
+        : { value: String(error) }
+      console.error('[better-auth] API request failed', details)
+    },
+  },
   trustedOrigins: [
     ...(process.env.NODE_ENV === 'development'
       ? [
@@ -48,14 +62,15 @@ export const auth = betterAuth({
     expiresIn: 60 * 60 * 24 * 7,
     updateAge: 60 * 60 * 24,
   },
-  ...(process.env.NODE_ENV === 'development'
-    ? {
-        advanced: {
+  advanced: {
+    database: { validateSchema: true },
+    ...(process.env.NODE_ENV === 'development'
+      ? {
           defaultCookieAttributes: {
             sameSite: 'none' as const,
             secure: true,
           },
-        },
-      }
-    : {}),
+        }
+      : {}),
+  },
 })

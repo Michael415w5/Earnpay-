@@ -37,9 +37,14 @@ function money(cents: number) {
 }
 
 export async function initializeAccount(referralCode?: string): Promise<ActionResult> {
-  const currentUser = await getSessionUser()
-  await ensureAccount(currentUser.id, currentUser.email, currentUser.name, referralCode)
-  return { ok: true, message: 'Account is ready.' }
+  try {
+    const currentUser = await getSessionUser()
+    await ensureAccount(currentUser.id, currentUser.email, currentUser.name, referralCode)
+    return { ok: true, message: 'Account is ready.' }
+  } catch (error) {
+    console.error('[account] sign-up profile initialization failed', error)
+    throw error
+  }
 }
 
 export async function claimDailyTask(taskId: string): Promise<ActionResult> {

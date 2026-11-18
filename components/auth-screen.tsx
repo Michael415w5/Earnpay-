@@ -26,21 +26,30 @@ export function AuthScreen({ mode }: AuthScreenProps) {
     const password = String(formData.get('password') ?? '')
 
     startTransition(async () => {
-      const result = isSignUp
-        ? await authClient.signUp.email({ name, email, password })
-        : await authClient.signIn.email({ email, password })
+      try {
+        const result = isSignUp
+          ? await authClient.signUp.email({ name, email, password })
+          : await authClient.signIn.email({ email, password })
 
-      if (result.error) {
+        if (result.error) {
+          console.error(`[auth] ${mode} request failed`, {
+            code: result.error.code,
+            status: result.error.status,
+          })
+          setError('We couldn’t complete that request. Check your details and try again.')
+          return
+        }
+
+        if (isSignUp) {
+          const referralCode = typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('ref') ?? undefined : undefined
+          await initializeAccount(referralCode)
+        }
+        router.push('/dashboard')
+        router.refresh()
+      } catch (error) {
+        console.error(`[auth] ${mode} flow failed`, error)
         setError('We couldn’t complete that request. Check your details and try again.')
-        return
       }
-
-      if (isSignUp) {
-        const referralCode = typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('ref') ?? undefined : undefined
-        await initializeAccount(referralCode)
-      }
-      router.push('/dashboard')
-      router.refresh()
     })
   }
 

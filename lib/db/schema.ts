@@ -43,8 +43,8 @@ export const verification = pgTable('verification', {
   identifier: text('identifier').notNull(),
   value: text('value').notNull(),
   expiresAt: timestamp('expiresAt', { withTimezone: true }).notNull(),
-  createdAt: timestamp('createdAt', { withTimezone: true }).defaultNow(),
-  updatedAt: timestamp('updatedAt', { withTimezone: true }).defaultNow(),
+  createdAt: timestamp('createdAt', { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp('updatedAt', { withTimezone: true }).notNull().defaultNow(),
 })
 
 export const wallets = pgTable('wallets', {
