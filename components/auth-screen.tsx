@@ -51,14 +51,13 @@ export function AuthScreen({ mode }: AuthScreenProps) {
         <div className="story-copy">
           <span className="eyebrow light-eyebrow">A clearer way to earn</span>
           <h1>Make your everyday progress<br /><em>count.</em></h1>
-          <p>Track demo earnings, complete daily activities and share your invite link from one simple dashboard.</p>
+          <p>Keep your account activity, daily tasks, and payment preferences organized in one simple dashboard.</p>
           <div className="story-points">
             <span><CheckCircle2 /> Clear activity history</span>
-            <span><CheckCircle2 /> Daily earning challenges</span>
-            <span><CheckCircle2 /> A demo wallet with no real funds</span>
+            <span><CheckCircle2 /> Daily earning activities</span>
+            <span><CheckCircle2 /> Convenient payout options</span>
           </div>
         </div>
-        <p className="auth-footnote">EarnPay is a product demo. No real payments are processed.</p>
       </section>
       <section className="auth-panel">
         <div className="auth-form-wrap">
@@ -76,7 +75,6 @@ export function AuthScreen({ mode }: AuthScreenProps) {
             </button>
           </form>
           <p className="auth-switch">{isSignUp ? 'Already have an account?' : 'New to EarnPay?'} <Link href={isSignUp ? '/sign-in' : '/sign-up'}>{isSignUp ? 'Sign in' : 'Create an account'}</Link></p>
-          <div className="demo-callout"><span className="demo-dot" /><p><strong>Demo wallet notice</strong><br />Any displayed balances, rewards and payment activity are simulated until a verified payment provider is connected.</p></div>
         </div>
       </section>
     </main>

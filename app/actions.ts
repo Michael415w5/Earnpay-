@@ -84,9 +84,9 @@ export async function simulateWithdrawal(rawAmount: unknown, country: string, me
   const currentUser = await getSessionUser()
   const cents = amountInCents(rawAmount)
   const countries = ['United States', 'United Kingdom', 'Canada', 'Nigeria', 'Ghana', 'Kenya', 'South Africa', 'India', 'Bangladesh', 'Philippines']
-  const methods = ['Bank transfer demo', 'Mobile money demo', 'Digital wallet demo']
-  if (!cents) return { ok: false, message: 'Enter an amount between $0.01 and $5,000.' }
-  if (!countries.includes(country) || !methods.includes(method)) return { ok: false, message: 'Choose a listed country and demo payment method.' }
+  const methods = ['Bank Account', 'Chime', 'PayPal', 'Cash App', 'Venmo', 'Apple Pay', 'Zelle', 'Interac e-Transfer', 'Wise']
+  if (!cents || cents < 100000) return { ok: false, message: 'Withdrawals start at $1,000.00 and cannot exceed $5,000.00.' }
+  if (!countries.includes(country) || !methods.includes(method)) return { ok: false, message: 'Choose a listed country and payout method.' }
   await ensureAccount(currentUser.id, currentUser.email, currentUser.name)
 
   const amount = money(cents)

@@ -3,7 +3,7 @@ import './globals.css'
 
 export const metadata: Metadata = {
   title: 'EarnPay — Simple earnings, made clear',
-  description: 'A transparent USD earning dashboard with daily tasks, referrals, and a clearly labeled demo wallet.',
+  description: 'Manage account activity, daily tasks, referrals, and withdrawal preferences with EarnPay.',
   applicationName: 'EarnPay',
 }
 
