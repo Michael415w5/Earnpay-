@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EarnPay — Dashboard</title>
+<style>
+:root{--purple:#6b21a8;--deep:#4c167d;--bg:#f6f3fb;--ink:#241b2e;--muted:#756b80;--line:#eee8f4}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font:15px Arial,sans-serif;color:var(--ink)}
+header{background:linear-gradient(120deg,var(--deep),#8736bd);color:#fff;padding:18px max(18px,calc((100% - 1100px)/2));display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:23px;font-weight:800;letter-spacing:.3px}.status{font-size:11px;background:#fff2;border:1px solid #ffffff66;padding:7px 10px;border-radius:20px}
+main{max-width:1100px;margin:24px auto;padding:0 16px}.notice{background:#fff8e7;border:1px solid #f0d89b;color:#725516;padding:12px 14px;border-radius:12px;font-size:13px;line-height:1.5;margin-bottom:18px}
+.welcome{display:flex;justify-content:space-between;align-items:center;margin:16px 0 20px;gap:12px}.welcome h1{font-size:24px;margin:0 0 5px}.muted{color:var(--muted);font-size:13px}
+.balance{background:linear-gradient(130deg,#612094,#8c3cbd);color:white;border-radius:18px;padding:22px;box-shadow:0 8px 22px #52207822}.balance small{opacity:.85}.amount{font-size:36px;font-weight:800;margin:10px 0}.balance-foot{font-size:12px;opacity:.8}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:16px 0}.stat,.panel{background:#fff;border:1px solid var(--line);border-radius:15px;padding:18px;box-shadow:0 3px 12px #2c143808}.stat strong{display:block;font-size:21px;margin-top:9px}
+.layout{display:grid;grid-template-columns:220px 1fr;gap:16px;margin-top:16px}.nav{background:#fff;border:1px solid var(--line);border-radius:15px;padding:10px;height:max-content}.nav button{width:100%;text-align:left;border:0;background:transparent;padding:13px;border-radius:10px;color:#594c64;cursor:pointer;font-size:14px}.nav button.active,.nav button:hover{background:#f2e9fa;color:var(--purple);font-weight:700}
+.panel h2{font-size:18px;margin:0 0 14px}.actions{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.action{border:1px solid var(--line);border-radius:12px;padding:16px;background:#fff;text-align:left;cursor:pointer}.action b{display:block;margin-bottom:6px;color:var(--purple)}.action span{font-size:12px;color:var(--muted)}
+input,select{width:100%;padding:12px;border:1px solid #ddd3e7;border-radius:9px;margin:7px 0 13px;background:white;font-size:14px}label{font-size:13px;font-weight:700}.primary{background:var(--purple);color:white;border:0;padding:12px 16px;border-radius:9px;cursor:pointer;font-weight:700}.secondary{background:#f1e8f8;color:var(--purple);border:0;padding:10px 14px;border-radius:9px;cursor:pointer}
+.page{display:none}.page.active{display:block}.row{display:flex;gap:12px}.row>*{flex:1}table{width:100%;border-collapse:collapse;font-size:13px}td,th{text-align:left;padding:12px 8px;border-bottom:1px solid var(--line)}th{color:var(--muted)}
+.smallprint{font-size:12px;color:var(--muted);line-height:1.5;margin-top:14px}
+@media(max-width:700px){.layout{grid-template-columns:1fr}.nav{display:grid;grid-template-columns:repeat(3,1fr)}.nav button{text-align:center;padding:10px 4px;font-size:12px}.grid{grid-template-columns:1fr}.welcome{align-items:flex-start}.amount{font-size:30px}.actions{grid-template-columns:1fr}}
+</style></head>
+<body>
+<header><div class="logo">EarnPay</div><div class="status">PREVIEW</div></header>
+<main>
+<div class="notice"><b>Preview notice:</b> This dashboard uses sample data only. No real funds are held, earned, deposited or transferred. Withdrawal requests are simulated and are not sent to a bank.</div>
+<div class="welcome"><div><h1>Welcome back!</h1><div class="muted">Your account overview</div></div><button class="secondary" onclick="showPage('profile',document.querySelector('[data-page=profile]'))">My account</button></div>
+<div class="balance"><small>ACCOUNT BALANCE (SAMPLE)</small><div class="amount">$12,000.00</div><div class="balance-foot">Sample balance • Not withdrawable cash</div></div>
+<div class="grid">
+<div class="stat"><span class="muted">Total deposits (sample)</span><strong>$0.00</strong></div>
+<div class="stat"><span class="muted">Total withdrawals (sample)</span><strong id="totalOut">$0.00</strong></div>
+<div class="stat"><span class="muted">Referral rewards (sample)</span><strong>$0.00</strong></div>
+</div>
+<div class="layout">
+<nav class="nav">
+<button class="active" data-page="dashboard" onclick="showPage('dashboard',this)">Dashboard</button>
+<button data-page="deposit" onclick="showPage('deposit',this)">Deposit</button>
+<button data-page="withdraw" onclick="showPage('withdraw',this)">Withdraw</button>
+<button data-page="referrals" onclick="showPage('referrals',this)">Referrals</button>
+<button data-page="history" onclick="showPage('history',this)">Transactions</button>
+<button data-page="profile" onclick="showPage('profile',this)">Profile</button>
+</nav>
+<section>
+<div id="dashboard" class="page active">
+<div class="panel"><h2>Quick actions</h2><div class="actions">
+<button class="action" onclick="showPage('deposit',document.querySelector('[data-page=deposit]'))"><b>＋ Deposit</b><span>View the sample deposit screen</span></button>
+<button class="action" onclick="showPage('withdraw',document.querySelector('[data-page=withdraw]'))"><b>↗ Withdraw</b><span>Try a simulated withdrawal request</span></button>
+<button class="action" onclick="showPage('referrals',document.querySelector('[data-page=referrals]'))"><b>♧ Referrals</b><span>View your sample referral link</span></button>
+<button class="action" onclick="showPage('history',document.querySelector('[data-page=history]'))"><b>▤ Transactions</b><span>View sample activity</span></button>
+</div></div>
+<div class="panel" style="margin-top:15px"><h2>Recent activity</h2><p class="muted">No sample transactions yet. Try submitting a simulated withdrawal.</p></div>
+</div>
+<div id="deposit" class="page"><div class="panel"><h2>Deposit</h2><p class="muted">This is a preview only. No payment provider is connected.</p><label>Amount (USD)</label><input type="number" min="1" placeholder="Enter amount"><label>Payment method</label><select><option>Choose a sample payment method</option><option>Bank transfer (preview)</option><option>Card (preview)</option><option>Crypto (preview)</option></select><button class="primary" onclick="alert('Preview only: no payment was initiated or received.')">Continue</button></div></div>
+<div id="withdraw" class="page"><div class="panel"><h2>Withdraw funds</h2><p class="muted">Test the form layout. This will not transfer money.</p><label>Amount (USD)</label><input id="amount" type="number" min="1" placeholder="Enter amount"><label>Country</label><select id="country"><option value="">Select country</option><option>Nigeria</option><option>Ghana</option><option>Kenya</option><option>South Africa</option><option>United States</option><option>United Kingdom</option><option>Canada</option><option>India</option><option>Bangladesh</option><option>Other</option></select><label>Payment destination (test only)</label><input placeholder="Enter sample bank or wallet details"><button class="primary" onclick="requestWithdrawal()">Submit request</button><p class="smallprint">Do not enter real banking credentials or card details. The form does not connect to banks or payment networks.</p></div></div>
+<div id="referrals" class="page"><div class="panel"><h2>Refer friends</h2><p class="muted">Your sample referral link</p><input id="refLink" readonly value="https://example.com/?ref=earnpay"><button class="primary" onclick="navigator.clipboard?.writeText(document.getElementById('refLink').value).then(()=>alert('Sample link copied')).catch(()=>alert('Copy the link manually'))">Copy referral link</button><p class="smallprint">This placeholder is not a live referral tracking URL.</p></div></div>
+<div id="history" class="page"><div class="panel"><h2>Transaction history</h2><table><thead><tr><th>Type</th><th>Amount</th><th>Status</th></tr></thead><tbody id="transactions"><tr><td colspan="3" class="muted">No sample transactions yet</td></tr></tbody></table></div></div>
+<div id="profile" class="page"><div class="panel"><h2>Account profile</h2><label>Display name</label><input value="EarnPay User"><label>Email</label><input type="email" value="user@example.com"><label>Account status</label><input value="Preview account" readonly><button class="primary" onclick="alert('Preview profile: changes are not saved.')">Save preview</button></div></div>
+</section></div>
+</main>
+<script>
+function showPage(id,btn){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));let b=btn||document.querySelector('[data-page="'+id+'"]');if(b)b.classList.add('active');}
+let total=0;
+function requestWithdrawal(){let amount=Number(document.getElementById('amount').value),country=document.getElementById('country').value;if(!amount||amount<=0){alert('Enter a valid sample amount.');return;}if(!country){alert('Choose a country.');return;}let body=document.getElementById('transactions');if(body.innerText.includes('No sample'))body.innerHTML='';let row=body.insertRow(0);row.innerHTML='<td>Withdrawal preview · '+country+'</td><td>$'+amount.toFixed(2)+'</td><td>Simulated</td>';total+=amount;document.getElementById('totalOut').innerText='$'+total.toFixed(2);alert('Preview request recorded on this page only. No money was transferred.');}
+</script></body></html>
